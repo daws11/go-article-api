@@ -3,12 +3,14 @@ package article
 import (
 	"database/sql"
 	"fmt"
+	"log"
 )
 
 // Interface untuk decoupling
 type Repository interface {
 	CreateArticle(article ArticleInput) (int64, error)
-	GetArticles(limit, offset int) ([]Article, error)
+	// GetArticles(limit, offset int) ([]Article, error) // pagination server side
+	GetArticles() ([]Article, error)
 	GetArticleByID(id int64) (Article, error)
 	UpdateArticle(id int64, article ArticleInput) error
 	DeleteArticle(id int64) error
@@ -36,26 +38,41 @@ func (r *mysqlRepository) CreateArticle(article ArticleInput) (int64, error) {
 	return id, nil
 }
 
-func (r *mysqlRepository) GetArticles(limit, offset int) ([]Article, error) {
-	query := "SELECT id, title, content, category, created_date, updated_date, status FROM posts LIMIT ? OFFSET ?"
-	rows, err := r.db.Query(query, limit, offset)
+func (r *mysqlRepository) GetArticles() ([]Article, error) { // Hapus limit, offset dari signature
+	// Query tanpa LIMIT dan OFFSET. Pertimbangkan ORDER BY untuk konsistensi.
+	query := "SELECT id, title, content, category, created_date, updated_date, status FROM posts ORDER BY created_date DESC"
+
+	// Eksekusi query tanpa parameter limit/offset
+	rows, err := r.db.Query(query)
 	if err != nil {
-		return nil, fmt.Errorf("error querying articles: %w", err)
+		// Kembalikan error jika query gagal
+		return nil, fmt.Errorf("error querying all articles: %w", err)
 	}
+	// Pastikan rows ditutup setelah selesai
 	defer rows.Close()
 
-	articles := []Article{}
+	articles := []Article{} // Inisialisasi slice kosong
 	for rows.Next() {
 		var art Article
-		err := rows.Scan(&art.ID, &art.Title, &art.Content, &art.Category, &art.CreatedDate, &art.UpdatedDate, &art.Status)
-		if err != nil {
-			return nil, fmt.Errorf("error scanning article row: %w", err)
+		// Scan data dari baris ke struct Article
+		errScan := rows.Scan(&art.ID, &art.Title, &art.Content, &art.Category, &art.CreatedDate, &art.UpdatedDate, &art.Status)
+		if errScan != nil {
+			// Log error scan tapi lanjutkan ke baris berikutnya (atau hentikan sesuai kebutuhan)
+			log.Printf("Warning: error scanning article row: %v", errScan)
+			// Jika ingin berhenti saat ada error scan:
+			// return nil, fmt.Errorf("error scanning article row: %w", errScan)
+			continue // Lanjutkan ke baris berikutnya
 		}
+		// Tambahkan artikel yang berhasil di-scan ke slice
 		articles = append(articles, art)
 	}
+
+	// Periksa error yang mungkin terjadi selama iterasi rows
 	if err = rows.Err(); err != nil {
 		return nil, fmt.Errorf("error iterating article rows: %w", err)
 	}
+
+	// Kembalikan slice (bisa kosong jika tabel kosong atau semua baris error scan)
 	return articles, nil
 }
 

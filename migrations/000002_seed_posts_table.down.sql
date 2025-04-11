@@ -1,0 +1,1 @@
+DELETE FROM posts WHERE title LIKE 'Judul Artikel Dummy ke-%';

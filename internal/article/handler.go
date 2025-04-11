@@ -48,27 +48,27 @@ func (h *Handler) CreateArticleHandler(c *gin.Context) {
 	c.JSON(http.StatusCreated, createdArticle) // Mengembalikan objek yang baru dibuat
 }
 
-// GET /article/:limit/:offset
+// GET
 func (h *Handler) GetArticlesHandler(c *gin.Context) {
-	limitStr := c.Param("limit")
-	offsetStr := c.Param("offset")
 
-	limit, err := strconv.Atoi(limitStr)
-	if err != nil || limit <= 0 {
-		limit = 10 // Default limit jika parsing gagal atau invalid
-	}
-	offset, err := strconv.Atoi(offsetStr)
-	if err != nil || offset < 0 {
-		offset = 0 // Default offset jika parsing gagal atau invalid
-	}
+	/*
+	   limitStr := c.DefaultQuery("limit", "10")
+	   offsetStr := c.DefaultQuery("offset", "0")
+	   limit, err := strconv.Atoi(limitStr)
+	   // ... (logika default/error handling limit/offset dihapus)
+	*/
 
-	articles, err := h.service.GetArticles(limit, offset)
+	articles, err := h.service.GetArticles() // Modifikasi signature service jika perlu
 	if err != nil {
 		log.Printf("Error getting articles: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve articles: " + err.Error()})
 		return
 	}
 
+	// Jika articles nil (misal dari query error yg tidak throw), kembalikan array kosong
+	if articles == nil {
+		articles = []Article{} // Atau tipe slice Anda
+	}
 	c.JSON(http.StatusOK, articles)
 }
 

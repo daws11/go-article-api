@@ -15,6 +15,8 @@ import (
 	// Import internal packages (sesuaikan path jika beda)
 	"github.com/daws11/go-article-api/internal/article"
 	"github.com/daws11/go-article-api/internal/database"
+	_ "github.com/golang-migrate/migrate/v4/database/mysql"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 func main() {

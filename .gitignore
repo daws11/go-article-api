@@ -1,0 +1,10 @@
+# Environment variables
+.env
+
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+go-article-api
+bin/

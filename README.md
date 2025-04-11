@@ -1,9 +1,10 @@
 # Microservice API Artikel (Go)
 
 Repository Microservice API Artikel ini dibuat oleh Muhammad Abdurrahman Firdaus sebagai kandidat Golang Developer di PT Sharing Vision Indonesia.
-Sebuah microservice API CRUD (Create, Read, Update, Delete) sederhana untuk mengelola artikel, dibangun menggunakan Go, Gin, dan MySQL. Proyek ini merupakan contoh implementasi berdasarkan kebutuhan dari dokumen "Test Backend Sharing Vision 2023".
 
-## Tumpukan Teknologi (Technology Stack)
+Repository ini berisikan kode untuk sebuah microservice API CRUD (Create, Read, Update, Delete) sederhana untuk mengelola artikel, dibangun menggunakan Go, Gin, dan MySQL. Proyek ini merupakan contoh implementasi berdasarkan kebutuhan dari dokumen "Test Backend Sharing Vision 2023".
+
+## Technology Stack
 
 * **Bahasa:** Go (Golang)
 * **Framework Web:** Gin (`github.com/gin-gonic/gin`)
@@ -22,7 +23,7 @@ Sebuah microservice API CRUD (Create, Read, Update, Delete) sederhana untuk meng
 
 ## Prasyarat
 
-* Go (versi 1.18 atau lebih baru direkomendasikan)
+* Go (versi 1.18)
 * Server MySQL
 * Alat CLI `golang-migrate/migrate` (Instal: `go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest`)
 * Git
@@ -52,7 +53,7 @@ Sebuah microservice API CRUD (Create, Read, Update, Delete) sederhana untuk meng
     ```
 
 4.  **Jalankan Migrasi Database:**
-    Pastikan server MySQL Anda berjalan dan database sudah ada. Kemudian jalankan:
+    Pastikan server MySQL Anda berjalan dan database sudah ada dan sudah membut database dengan nama 'article'. Kemudian jalankan:
     ```bash
     # Ganti DSN dengan koneksi Anda jika berbeda dari .env
     # Format DSN: mysql://user:password@tcp(host:port)/dbname

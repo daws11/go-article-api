@@ -304,12 +304,3 @@ Anda dapat menggunakan alat seperti [Postman](https://www.postman.com/), Insomni
 1.  Pastikan aplikasi berjalan (`go run cmd/server/main.go`).
 2.  Kirim permintaan ke endpoint yang sesuai yang tercantum di bagian [Dokumentasi API](#dokumentasi-api) menggunakan URL dasar `http://localhost:8080` (atau port yang Anda konfigurasikan).
 3.  Ingatlah untuk mengatur header `Content-Type` ke `application/json` untuk permintaan dengan body (POST, PUT).
-
-## (Opsional) Pengembangan Selanjutnya
-
-* Implementasi unit test dan integration test.
-* Tambahkan logging terstruktur (misalnya, menggunakan Zap atau Logrus).
-* Implementasi manajemen konfigurasi menggunakan Viper atau envconfig.
-* Tambahkan middleware otentikasi dan otorisasi.
-* Implementasi graceful shutdown.
-* Kontainerisasi aplikasi menggunakan Docker.
